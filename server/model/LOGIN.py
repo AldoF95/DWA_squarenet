@@ -8,16 +8,17 @@ class Login(db_conn.db.Entity):
         _table_ = "LOGIN"
         id = PrimaryKey(str)
         time = Required(datetime.datetime)
-        first_login = Required(bool)
+        first_login = Required(bool, default = False)
         user = Required(USER.User)
 
 @db_session
 def login_insert(data):
         id_gen = str(uuid.uuid4())
         user = USER.user_select(data['user_id'])
+        data['time'] = datetime.datetime.now()
         login = Login(  id = id_gen,
                         time = data['time'],
-                        first_login = bool(data['first_login']),
+                        #first_login = bool(data['first_login']),
                         user = user)
         commit()
         return login.to_dict()

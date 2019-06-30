@@ -4,8 +4,8 @@ from model import TAGS
 
 tags_api = Blueprint('tags_api', __name__)
 
-@tags_api.route('/tags', methods = ['PUT'])
-def tags_put():
+@tags_api.route('/tags', methods = ['POST'])
+def tags_post():
     data = request.get_json()
     res = TAGS.tags_insert(data)
     return jsonify(res)

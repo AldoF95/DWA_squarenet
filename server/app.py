@@ -1,9 +1,11 @@
 from flask import Flask, Response, jsonify, request
+from flask_cors import CORS
 from model import LOGIN, USER, TAGS, PROFILE, POSTS, NOTIFICATIONS
 from model import db_conn
 from routes import USER_route, LOGIN_route, TAGS_route, PROFILE_route, POSTS_route, NOTIFICATIONS_route
 
 app = Flask(__name__)
+CORS(app)
 
 app.register_blueprint(USER_route.user_api)
 app.register_blueprint(LOGIN_route.login_api)

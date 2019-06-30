@@ -7,10 +7,10 @@ class Profile(db_conn.db.Entity):
         _table_ = "PROFILE"
         id = PrimaryKey(str)
         user = Required(USER.User)
-        gender = Required(str)
-        age = Required(int)
-        description = Required(str)
-        tags = Required(Json)
+        gender = Required(str, default = 'N')
+        age = Required(int, default = 0)
+        description = Required(str, default = "none")
+        tags = Required(Json, default = [])
 
 @db_session
 def profile_insert(data):
@@ -21,10 +21,10 @@ def profile_insert(data):
         profile = Profile(
                 id = id_gen,
                 user = user,
-                gender = data['gender'],
-                age = data['age'],
-                description = data['description'],
-                tags = data['tags']
+                #gender = data['gender'],
+                #age = data['age'],
+                #description = data['description'],
+                #tags = data['tags']
         )
         commit()
         return profile.to_dict()
@@ -33,6 +33,14 @@ def profile_insert(data):
 def check_user(ch_user):
         user_id = Profile.get(user = ch_user)
         return user_id
+
+@db_session
+def user_profile(user_id):
+        profile = Profile.get(user = user_id)
+        if(profile): 
+                return profile.to_dict()
+        else:
+                return 'Profile not found'
 
 @db_session
 def profile_select_all():
@@ -45,6 +53,11 @@ def profile_select_all():
 def profile_select(profile_id):
         profile = Profile.get(id=profile_id)
         return profile
+
+@db_session
+def profile_update(data):
+        Profile[data['id']].set(gender = data['gender'], age = data['age'], description = data['description'])
+        return 'profile updated'
 
 @db_session
 def profile_delete(profile_id):

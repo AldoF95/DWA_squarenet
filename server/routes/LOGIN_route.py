@@ -4,8 +4,8 @@ from model import LOGIN
 
 login_api = Blueprint('login_api', __name__)
 
-@login_api.route('/login', methods = ['PUT'])
-def login_put():
+@login_api.route('/login', methods = ['POST'])
+def login_post():
     data = request.get_json()
     res = LOGIN.login_insert(data)
     return jsonify(res)

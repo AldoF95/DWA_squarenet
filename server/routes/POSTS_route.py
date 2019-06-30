@@ -6,10 +6,16 @@ from model import POSTS, PROFILE
 
 post_api = Blueprint('post_api', __name__)
 
-@post_api.route('/posts', methods = ['PUT'])
-def post_put():
+@post_api.route('/posts', methods = ['POST'])
+def post_post():
     data = request.get_json()
     res = POSTS.posts_insert(data)
+    return jsonify(res)
+
+@post_api.route('/posts', methods = ['PUT'])
+def post_update_users():
+    data = request.get_json()
+    res = POSTS.post_apply_user_update(data)
     return jsonify(res)
 
 @post_api.route('/posts', methods = ['GET'])

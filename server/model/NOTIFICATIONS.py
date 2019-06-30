@@ -41,6 +41,12 @@ def notification_select(notif_id):
         return notif
 
 @db_session
+def notification_select_user(user_id):
+        notif = Notifications.select(lambda u: u.to_user == user_id)
+        notif = {'data' : [u.to_dict() for u in notif]}
+        return notif
+
+@db_session
 def notification_delete(notif_id):
         Notifications[notif_id].delete()
         return 'notification deleted'

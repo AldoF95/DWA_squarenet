@@ -31,11 +31,34 @@ def user_insert(data):
         commit()
         return user.to_dict()
         
+@db_session
+def user_update_password(data):
+        p = str(base64.b64encode(bytes(data['password'], encoding='utf8')))
+        User[data['id']].password = p
+        return 'Password updated'
+        
+@db_session
+def user_update(data):
+        User[data['id']].name = data['name']
+        return 'Name updated'
 
 @db_session
 def check_email(ch_mail):
         user_email = User.get(email = ch_mail)
         return user_email
+
+@db_session
+def user_login(mail, pas):
+        user = User.get(email = mail)
+        pas = str(base64.b64encode(bytes(pas, encoding='utf8')))
+        if user:
+                user = user.to_dict()
+                if user['password']==pas:
+                        return user
+                else:
+                        return 'wrong password'
+        else:
+                return 'User not found'
 
 @db_session
 def user_select_all():

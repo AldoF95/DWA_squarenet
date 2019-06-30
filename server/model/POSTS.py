@@ -13,7 +13,7 @@ class Posts(db_conn.db.Entity):
         need_users = Required(int)
         due_time = Required(datetime.datetime)
         location = Required(str)
-        apply_users = Optional(Json)
+        apply_users = Optional(Json, default = [])
         tags = Required(TAGS.Tags)
         notifications = Set('Notifications')
 
@@ -31,10 +31,15 @@ def posts_insert(data):
                         need_users = data['need_users'],
                         due_time = data['due_time'],
                         location = data['location'],
-                        apply_users = data['apply_user'],
+                        #apply_users = data['apply_user'],
                         tags = tags)
         commit()
         return post.to_dict()
+
+@db_session
+def post_apply_user_update(data):
+        Posts[data['post_id']].apply_users = data['apply_users']
+        return 'Post updated'
 
 @db_session
 def post_select_all():
@@ -78,3 +83,5 @@ def profile_posts(user_id):
         if (post != []):
                 post = {'data': [u.to_dict() for u in post]}
                 return post
+        else:
+                return 'No posts'
