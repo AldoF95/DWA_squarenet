@@ -1,4 +1,4 @@
-# DWA_squarenet
+# QUARENET - backend
 SQUARENET - social network type web-app 
 
 ## Intro
