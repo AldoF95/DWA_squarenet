@@ -13,7 +13,7 @@ class User(db_conn.db.Entity):
         login = Set('Login')
         profile = Set('Profile')
         posts = Set('Posts')
-        notifications_from = Set('Notifications', reverse = 'from_user')
+        #notifications_from = Set('Notifications', reverse = 'from_user')
         notifications_to = Set('Notifications', reverse = 'to_user')
 
 

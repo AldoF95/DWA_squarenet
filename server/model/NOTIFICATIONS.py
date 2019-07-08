@@ -8,7 +8,7 @@ class Notifications(db_conn.db.Entity):
         id = PrimaryKey(str)
         time_created = Required(datetime.datetime)
         notification_type = Required(str)
-        from_user = Required(USER.User)
+        from_user = Required(Json, default = [])
         to_user = Required(USER.User)
         posts = Required(POSTS.Posts)
 
@@ -16,13 +16,12 @@ class Notifications(db_conn.db.Entity):
 def notification_insert(data):
         id_gen = str(uuid.uuid4())
         data['time_created'] = datetime.datetime.now()
-        f_user= USER.user_select(data['from_user'])
         t_user = USER.user_select(data['to_user'])
         post = POSTS.post_select(data['post'])
         notification = Notifications( id = id_gen,
                                         time_created = data['time_created'],
                                         notification_type = data['notification_type'],
-                                        from_user = f_user,
+                                        from_user = data['from_user'],
                                         to_user = t_user,
                                         posts = post)
         commit()
@@ -42,11 +41,22 @@ def notification_select(notif_id):
 
 @db_session
 def notification_select_user(user_id):
-        notif = Notifications.select(lambda u: u.to_user == user_id)
+        notif = select(u for u in Notifications if str(u.to_user) == str(user_id))[:]
         notif = {'data' : [u.to_dict() for u in notif]}
         return notif
+
+@db_session
+def notification_update(data):
+        Notifications[data['id_notify']].notification_type = data['type']
+        return 'Notification updated'
+
 
 @db_session
 def notification_delete(notif_id):
         Notifications[notif_id].delete()
         return 'notification deleted'
+
+@db_session
+def notification_delete_all():
+        delete(u for u in Notifications)
+        return 'all notifications deleted'

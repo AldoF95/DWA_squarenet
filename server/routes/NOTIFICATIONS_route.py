@@ -16,6 +16,12 @@ def notification_get_all():
     res = NOTIFICATIONS.notification_select_all()
     return jsonify(res)
 
+@notification_api.route('/notification', methods = ['PUT'])
+def notification_put():
+    data = request.get_json()
+    res = NOTIFICATIONS.notification_update(data)
+    return jsonify(res)
+
 @notification_api.route('/notification/<id_notif>', methods = ['GET'])
 def notification_get(id_notif):
     notif_id = str(id_notif)
@@ -32,5 +38,10 @@ def notification_get_user(user_id):
 def notification_delete(id_notif):
     notif_id = str(id_notif)
     res = NOTIFICATIONS.notification_delete(notif_id)
+    return res
+
+@notification_api.route('/notification/all', methods = ['DELETE'])
+def notification_delete_all():
+    res = NOTIFICATIONS.notification_delete_all()
     return res
    
