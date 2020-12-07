@@ -1,7 +1,7 @@
 db_params={
     "provider" : "postgres",
     "user" : "postgres",
-    "password" : "program22",
+    "password" : "xxxxxxxxx",
     "host" : "localhost",
     "database" : "DWA"
 }
